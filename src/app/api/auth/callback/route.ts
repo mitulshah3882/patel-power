@@ -35,6 +35,13 @@ export async function GET(request: Request) {
     }
   }
 
-  // Return to login page on error
+  // If code was provided but exchange failed, likely a PKCE cookie mismatch
+  // This happens when magic link opens in a different browser than where it was requested
+  // (common with PWAs on iOS where PWA uses Safari cookies but link opens in Chrome)
+  if (code) {
+    return NextResponse.redirect(`${origin}/auth-help`)
+  }
+
+  // No code provided - return to login page
   return NextResponse.redirect(`${origin}/login?error=Could not authenticate user`)
 }
