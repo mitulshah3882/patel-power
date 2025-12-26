@@ -19,17 +19,44 @@ Build a mobile-first web app (PWA) called **Patel Power** for the Patel family t
 
 ### 1. Authentication (Keep It Simple!)
 
-Use **Supabase Magic Links** (email-based, passwordless auth):
-- User enters email → receives a login link → clicks it → logged in
+Use **Supabase Email OTP** (email-based, passwordless auth):
+- User enters email → receives a 6-digit code → enters code in app → logged in
 - No passwords to remember (critical for older family members)
-- Persist sessions so they rarely need to re-authenticate
+- Persist sessions so they rarely need to re-authenticate (90-day refresh token)
+
+**Why OTP codes instead of magic links?**
+iOS PWAs have isolated storage from Safari browser. When a magic link opens in Safari, the PWA cannot access the resulting session. OTP codes solve this by keeping the entire auth flow within the app - the user copies the code from their email and enters it directly in the PWA.
+
+**Auth flow:**
+1. User enters email in app
+2. Supabase sends email with 6-digit OTP code
+3. User copies code from email and enters it in the app
+4. App verifies code with `supabase.auth.verifyOtp({ email, token, type: 'email' })`
+5. User is logged in!
 
 **First-time setup flow:**
 1. Enter email
-2. Click magic link in email
+2. Enter 6-digit code from email
 3. Set display name + pick an avatar/emoji
 4. Onboarding tutorial (see below)
 5. Done!
+
+**Supabase email template customization (recommended):**
+Customize the Magic Link email template in Supabase Dashboard → Authentication → Email Templates to emphasize the code:
+```html
+<h2>Your Patel Power login code</h2>
+<p style="font-size: 32px; font-weight: bold; letter-spacing: 8px;
+   font-family: monospace; background: #f3f4f6; padding: 16px;
+   border-radius: 8px; text-align: center;">
+  {{ .Token }}
+</p>
+<p>Enter this code in the app to sign in. It expires in 1 hour.</p>
+<p style="color: #666; font-size: 12px;">
+  Or click <a href="{{ .ConfirmationURL }}">here</a> to sign in via browser (non-PWA only).
+</p>
+```
+
+**Fallback:** Magic links still work for users accessing via browser (non-PWA), but the primary flow is OTP code entry.
 
 ### First-Time User Onboarding
 

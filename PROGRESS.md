@@ -1,15 +1,24 @@
 # Patel Power - Build Progress
 
-## Status: Ready for Deployment
+## Status: In Development (OTP Auth)
 
-The app is fully built, tested, and ready for production deployment via GitHub + Vercel.
+The app is deployed and functional. Currently implementing OTP code authentication to fix PWA login issues on iOS.
+
+## Current Work: OTP Authentication
+
+**Problem:** iOS isolates PWA storage from Safari browser, so magic links fail when opened from a PWA.
+
+**Solution:** Email OTP code verification - user enters a 6-digit code from their email directly in the app.
+
+**Branch:** `feature/otp-auth`
 
 ## Completed Features
 
 ### Core Functionality
 - [x] Next.js 14+ project with TypeScript and Tailwind CSS
 - [x] Supabase client utilities (browser + server + middleware)
-- [x] Magic link authentication (passwordless)
+- [x] Email OTP authentication (6-digit code, works in PWA)
+- [x] Magic link fallback (for non-PWA browser users)
 - [x] User profile setup with emoji picker
 - [x] 4-step onboarding tutorial (welcome, log workouts, streaks, compete)
 - [x] Home dashboard with personalized greeting
@@ -56,11 +65,14 @@ The app is fully built, tested, and ready for production deployment via GitHub +
 
 ## Remaining Tasks
 
-### Before First Users
-- [ ] Deploy to Vercel via GitHub
-- [ ] Set environment variables in Vercel dashboard
-- [ ] Test magic link flow in production
-- [ ] (Optional) Customize Supabase email template
+### OTP Auth Implementation (In Progress)
+- [x] Update spec documentation with OTP flow
+- [ ] Update login page with OTP code input step
+- [ ] Test OTP flow end-to-end on iOS PWA
+- [ ] Customize Supabase email template to emphasize code
+
+### Configuration
+- [ ] Extend Supabase session expiry to 90 days (Dashboard → Auth → Settings)
 
 ### Future Enhancements
 - [ ] Push notifications ("Don't break your streak!")
