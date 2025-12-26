@@ -9,6 +9,7 @@ import OnboardingSlides from '@/components/OnboardingSlides'
 import LogWorkoutButton from '@/components/LogWorkoutButton'
 import Confetti from '@/components/Confetti'
 import { Profile } from '@/lib/types/database'
+import { PatelPowerIcon } from '@/components/Logo'
 
 function OnboardingContent() {
   const router = useRouter()
@@ -195,7 +196,9 @@ export default function OnboardingPage() {
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-5xl mb-4 animate-bounce">💪</div>
+          <div className="mb-4 animate-bounce">
+            <PatelPowerIcon size={64} />
+          </div>
           <p className="text-gray-500">Loading...</p>
         </div>
       </div>

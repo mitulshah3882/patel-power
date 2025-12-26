@@ -11,6 +11,7 @@ import StreakFlame from '@/components/StreakFlame'
 import ActivityFeed from '@/components/ActivityFeed'
 import Confetti from '@/components/Confetti'
 import { motion } from 'framer-motion'
+import { PatelPowerIcon } from '@/components/Logo'
 
 interface ActivityItem {
   id: string
@@ -131,7 +132,9 @@ export default function HomePage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-5xl mb-4 animate-bounce">💪</div>
+          <div className="mb-4 animate-bounce">
+            <PatelPowerIcon size={64} />
+          </div>
           <p className="text-gray-500">Loading...</p>
         </div>
       </div>

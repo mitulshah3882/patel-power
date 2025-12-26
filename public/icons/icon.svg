@@ -1,0 +1,10 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="boltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+  </defs>
+  <!-- Centered lightning bolt scaled for 512x512 -->
+  <polygon points="282,46 180,242 244,242 218,466 358,218 282,218" fill="url(#boltGradient)" />
+</svg>

@@ -10,6 +10,7 @@ import BadgeDisplay from '@/components/BadgeDisplay'
 import StreakFlame from '@/components/StreakFlame'
 import EmojiPicker from '@/components/EmojiPicker'
 import { motion, AnimatePresence } from 'framer-motion'
+import { PatelPowerIcon } from '@/components/Logo'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -85,7 +86,9 @@ export default function ProfilePage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-5xl mb-4 animate-bounce">👤</div>
+          <div className="mb-4 animate-bounce">
+            <PatelPowerIcon size={64} />
+          </div>
           <p className="text-gray-500">Loading profile...</p>
         </div>
       </div>

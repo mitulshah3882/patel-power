@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { motion } from 'framer-motion'
+import { PatelPowerLogo } from '@/components/Logo'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -47,11 +48,10 @@ export default function LoginPage() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.2 }}
-            className="text-7xl mb-4"
+            className="flex justify-center mb-4"
           >
-            💪
+            <PatelPowerLogo size={120} showText />
           </motion.div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Patel Power</h1>
           <p className="text-gray-600">Family fitness tracking for 2026</p>
         </div>
 

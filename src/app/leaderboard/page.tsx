@@ -7,6 +7,7 @@ import { calculateStreak, getWorkoutsThisWeek, getWorkoutsThisMonth } from '@/li
 import BottomNav from '@/components/BottomNav'
 import LeaderboardCard from '@/components/LeaderboardCard'
 import { motion } from 'framer-motion'
+import { PatelPowerIcon } from '@/components/Logo'
 
 type TimeFilter = 'week' | 'month' | 'all'
 
@@ -137,7 +138,9 @@ export default function LeaderboardPage() {
       <div className="px-4 space-y-3">
         {loading ? (
           <div className="text-center py-12">
-            <div className="text-5xl mb-4 animate-bounce">🏆</div>
+            <div className="mb-4 animate-bounce flex justify-center">
+              <PatelPowerIcon size={64} />
+            </div>
             <p className="text-gray-500">Loading leaderboard...</p>
           </div>
         ) : entries.length === 0 ? (

@@ -3,8 +3,12 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Patel Power',
-  description: 'Family workout tracking for 2026',
+  description: 'Family fitness tracker for the Patel family',
   manifest: '/manifest.json',
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/icons/apple-touch-icon.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -28,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
       </head>
       <body className="font-sans antialiased">{children}</body>
     </html>

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Profile } from '@/lib/types/database'
+import { PatelPowerIcon } from '@/components/Logo'
 
 interface OnboardingSlidesProps {
   familyMembers: Profile[]
@@ -12,7 +13,7 @@ interface OnboardingSlidesProps {
 const slides = [
   {
     title: 'Welcome to Patel Power!',
-    emoji: '💪',
+    emoji: 'logo',
     description: "We're all getting healthier together in 2026",
     showFamily: true,
     button: "Let's go!",
@@ -70,9 +71,13 @@ export default function OnboardingSlides({ familyMembers, onComplete }: Onboardi
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-            className="text-8xl mb-6"
+            className="mb-6 flex justify-center"
           >
-            {slide.emoji}
+            {slide.emoji === 'logo' ? (
+              <PatelPowerIcon size={100} />
+            ) : (
+              <span className="text-8xl">{slide.emoji}</span>
+            )}
           </motion.div>
 
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{slide.title}</h1>
