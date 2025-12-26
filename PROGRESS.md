@@ -8,7 +8,7 @@ The app is deployed and functional. Currently implementing OTP code authenticati
 
 **Problem:** iOS isolates PWA storage from Safari browser, so magic links fail when opened from a PWA.
 
-**Solution:** Email OTP code verification - user enters a 6-digit code from their email directly in the app.
+**Solution:** Email OTP code verification - user enters an 8-digit code from their email directly in the app.
 
 **Branch:** `feature/otp-auth`
 
@@ -17,7 +17,7 @@ The app is deployed and functional. Currently implementing OTP code authenticati
 ### Core Functionality
 - [x] Next.js 14+ project with TypeScript and Tailwind CSS
 - [x] Supabase client utilities (browser + server + middleware)
-- [x] Email OTP authentication (6-digit code, works in PWA)
+- [x] Email OTP authentication (8-digit code, works in PWA)
 - [x] Magic link fallback (for non-PWA browser users)
 - [x] User profile setup with emoji picker
 - [x] 4-step onboarding tutorial (welcome, log workouts, streaks, compete)

@@ -20,7 +20,7 @@ Build a mobile-first web app (PWA) called **Patel Power** for the Patel family t
 ### 1. Authentication (Keep It Simple!)
 
 Use **Supabase Email OTP** (email-based, passwordless auth):
-- User enters email → receives a 6-digit code → enters code in app → logged in
+- User enters email → receives an 8-digit code → enters code in app → logged in
 - No passwords to remember (critical for older family members)
 - Persist sessions so they rarely need to re-authenticate (90-day refresh token)
 
@@ -29,14 +29,14 @@ iOS PWAs have isolated storage from Safari browser. When a magic link opens in S
 
 **Auth flow:**
 1. User enters email in app
-2. Supabase sends email with 6-digit OTP code
+2. Supabase sends email with 8-digit OTP code
 3. User copies code from email and enters it in the app
 4. App verifies code with `supabase.auth.verifyOtp({ email, token, type: 'email' })`
 5. User is logged in!
 
 **First-time setup flow:**
 1. Enter email
-2. Enter 6-digit code from email
+2. Enter 8-digit code from email
 3. Set display name + pick an avatar/emoji
 4. Onboarding tutorial (see below)
 5. Done!

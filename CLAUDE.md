@@ -79,7 +79,7 @@ Real-time subscriptions enabled on `workouts` and `profiles` tables.
 ## Key Design Decisions
 
 ### Authentication
-- **Email OTP codes** (no passwords) - user enters 6-digit code from email
+- **Email OTP codes** (no passwords) - user enters 8-digit code from email
 - OTP flow works in PWA (magic links fail due to iOS storage isolation)
 - Persist sessions (90-day refresh token recommended) to minimize re-authentication
 
