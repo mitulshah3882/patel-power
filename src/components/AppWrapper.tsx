@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import SplashScreen from './SplashScreen'
+import ThemeProvider from './ThemeProvider'
 
 interface AppWrapperProps {
   children: React.ReactNode
@@ -22,13 +23,13 @@ export default function AppWrapper({ children }: AppWrapperProps) {
   }
 
   return (
-    <>
+    <ThemeProvider>
       <AnimatePresence>
         {showSplash && (
           <SplashScreen onComplete={() => setShowSplash(false)} />
         )}
       </AnimatePresence>
       {children}
-    </>
+    </ThemeProvider>
   )
 }

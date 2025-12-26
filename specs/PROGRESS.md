@@ -1,16 +1,8 @@
 # Patel Power - Build Progress
 
-## Status: In Development (OTP Auth)
+## Status: MVP Complete
 
-The app is deployed and functional. Currently implementing OTP code authentication to fix PWA login issues on iOS.
-
-## Current Work: OTP Authentication
-
-**Problem:** iOS isolates PWA storage from Safari browser, so magic links fail when opened from a PWA.
-
-**Solution:** Email OTP code verification - user enters an 8-digit code from their email directly in the app.
-
-**Branch:** `feature/otp-auth`
+The app is deployed and fully functional with all core features implemented.
 
 ## Completed Features
 
@@ -47,6 +39,12 @@ The app is deployed and functional. Currently implementing OTP code authenticati
 - [x] App icons (192x192, 512x512)
 - [x] Mobile-first responsive design
 - [x] Bottom navigation
+- [x] Animated splash screen on app load
+
+### Appearance
+- [x] Dark mode support with system preference detection
+- [x] Theme toggle in profile (light/dark/system)
+- [x] Theme persisted to localStorage
 
 ### Database
 - [x] Supabase schema deployed (profiles, workouts, user_badges)
@@ -65,21 +63,15 @@ The app is deployed and functional. Currently implementing OTP code authenticati
 
 ## Remaining Tasks
 
-### OTP Auth Implementation (In Progress)
-- [x] Update spec documentation with OTP flow
-- [ ] Update login page with OTP code input step
-- [ ] Test OTP flow end-to-end on iOS PWA
-- [ ] Customize Supabase email template to emphasize code
-
 ### Configuration
 - [ ] Extend Supabase session expiry to 90 days (Dashboard → Auth → Settings)
+- [ ] Customize Supabase email template to emphasize OTP code
 
 ### Future Enhancements
 - [ ] Push notifications ("Don't break your streak!")
 - [ ] Workout type selection (cardio, strength, yoga, walk)
 - [ ] Weekly family challenges
 - [ ] Year-end stats/wrapped feature
-- [ ] Dark mode support
 
 ## Security Notes
 

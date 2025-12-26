@@ -11,6 +11,7 @@ import StreakFlame from '@/components/StreakFlame'
 import EmojiPicker from '@/components/EmojiPicker'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PatelPowerIcon } from '@/components/Logo'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -105,7 +106,7 @@ export default function ProfilePage() {
     : ''
 
   return (
-    <div className="min-h-screen pb-20 bg-gradient-to-b from-primary-50 to-white">
+    <div className="min-h-screen pb-20 bg-gradient-to-b from-primary-50 to-white dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
       <div className="bg-gradient-to-br from-primary-500 to-primary-600 text-white px-4 pt-12 pb-20 rounded-b-3xl">
         <motion.div
@@ -184,22 +185,22 @@ export default function ProfilePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl shadow-xl p-6 mb-6"
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 mb-6"
         >
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-gray-500 text-sm">Total Workouts</p>
-              <p className="text-3xl font-bold text-gray-900">{workouts.length}</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">Total Workouts</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">{workouts.length}</p>
             </div>
             <div>
-              <p className="text-gray-500 text-sm">Current Streak</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">Current Streak</p>
               <div className="flex justify-center">
                 <StreakFlame streak={streak} size="md" />
               </div>
             </div>
             <div>
-              <p className="text-gray-500 text-sm">Longest Streak</p>
-              <p className="text-3xl font-bold text-gray-900">{longestStreak}</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">Longest Streak</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">{longestStreak}</p>
             </div>
           </div>
         </motion.div>
@@ -209,22 +210,33 @@ export default function ProfilePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white rounded-2xl shadow-xl p-6 mb-6"
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 mb-6"
         >
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Badges</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Badges</h2>
           <BadgeDisplay earnedBadges={badges} showLocked={true} size="md" />
+        </motion.div>
+
+        {/* Theme */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 mb-6"
+        >
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Appearance</h2>
+          <ThemeToggle />
         </motion.div>
 
         {/* Sign out */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.3 }}
           className="text-center"
         >
           <button
             onClick={handleSignOut}
-            className="text-red-500 hover:text-red-600 font-medium"
+            className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 font-medium"
           >
             Sign Out
           </button>

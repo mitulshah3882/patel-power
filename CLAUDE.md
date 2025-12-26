@@ -46,7 +46,9 @@ npm run lint       # Run ESLint
   /EmojiPicker.tsx          # Avatar selection
   /OnboardingSlides.tsx     # Tutorial carousel
   /SplashScreen.tsx         # Animated splash screen on app load
-  /AppWrapper.tsx           # Client wrapper for splash screen state
+  /AppWrapper.tsx           # Client wrapper for splash screen and theme
+  /ThemeProvider.tsx        # Dark mode context with system preference detection
+  /ThemeToggle.tsx          # Light/dark/system toggle component
 
 /lib
   /supabase.ts              # Supabase client setup
@@ -121,6 +123,8 @@ Real-time subscriptions enabled on `workouts` and `profiles` tables.
 - Use Tailwind CSS utilities
 - Mobile-first approach (`md:` and `lg:` for larger screens)
 - Color palette: orange/coral primary, teal secondary, warm grays
+- Dark mode: use `dark:` prefix for dark mode styles (e.g., `dark:bg-gray-900`)
+- Theme controlled via class on `<html>` element (`darkMode: 'class'` in Tailwind config)
 
 ### Data Fetching
 - Use Supabase client from `/lib/supabase.ts`

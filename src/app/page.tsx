@@ -164,12 +164,12 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center dark:bg-gray-900">
         <div className="text-center">
           <div className="mb-4 animate-bounce">
             <PatelPowerIcon size={64} />
           </div>
-          <p className="text-gray-500">Loading...</p>
+          <p className="text-gray-500 dark:text-gray-400">Loading...</p>
         </div>
       </div>
     )
@@ -182,7 +182,7 @@ export default function HomePage() {
   const badgeInfo = newBadge ? getBadgeById(newBadge) : null
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 dark:bg-gray-900">
       <Confetti trigger={showConfetti} onComplete={() => setShowConfetti(false)} />
 
       {/* Badge earned modal */}
@@ -196,13 +196,13 @@ export default function HomePage() {
           <motion.div
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
-            className="bg-white rounded-3xl p-8 text-center max-w-sm"
+            className="bg-white dark:bg-gray-800 rounded-3xl p-8 text-center max-w-sm"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="text-7xl mb-4">{badgeInfo.emoji}</div>
-            <h2 className="text-2xl font-bold mb-2">Badge Earned!</h2>
-            <p className="text-xl font-medium text-primary-600 mb-2">{badgeInfo.name}</p>
-            <p className="text-gray-600 mb-6">{badgeInfo.description}</p>
+            <h2 className="text-2xl font-bold dark:text-white mb-2">Badge Earned!</h2>
+            <p className="text-xl font-medium text-primary-600 dark:text-primary-400 mb-2">{badgeInfo.name}</p>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">{badgeInfo.description}</p>
             <button
               onClick={() => setNewBadge(null)}
               className="bg-primary-500 text-white px-6 py-3 rounded-xl font-medium"
@@ -233,20 +233,20 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl shadow-xl p-6 mb-6"
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 mb-6"
         >
           <div className="flex items-center justify-between mb-6">
             <div>
-              <p className="text-gray-500 text-sm">Current Streak</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">Current Streak</p>
               <StreakFlame streak={streak} size="lg" />
             </div>
             <div className="text-right">
-              <p className="text-gray-500 text-sm">This Week</p>
-              <p className="text-3xl font-bold text-gray-900">{weekCount}</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">This Week</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">{weekCount}</p>
             </div>
             <div className="text-right">
-              <p className="text-gray-500 text-sm">This Month</p>
-              <p className="text-3xl font-bold text-gray-900">{monthCount}</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">This Month</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">{monthCount}</p>
             </div>
           </div>
 
@@ -263,7 +263,7 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Family Activity</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Family Activity</h2>
           <ActivityFeed activities={activities} />
         </motion.div>
       </div>

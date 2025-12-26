@@ -14,7 +14,7 @@ export default function BottomNav() {
   const pathname = usePathname()
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 pb-safe z-30">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 pb-safe z-30">
       <div className="flex justify-around items-center h-16 max-w-md mx-auto">
         {navItems.map((item) => {
           const isActive = pathname === item.href
@@ -36,7 +36,7 @@ export default function BottomNav() {
               </span>
               <span
                 className={`text-xs mt-1 ${
-                  isActive ? 'text-primary-600 font-medium' : 'text-gray-500'
+                  isActive ? 'text-primary-600 dark:text-primary-400 font-medium' : 'text-gray-500 dark:text-gray-400'
                 }`}
               >
                 {item.label}

@@ -12,6 +12,7 @@ A mobile-first PWA for the Patel family to track workouts together in 2026. Buil
 - **Badges & Achievements** - Unlock milestones like "Week Warrior" and "Century Club"
 - **Activity Feed** - See when family members log workouts
 - **Confetti Celebrations** - Because logging a workout should feel rewarding!
+- **Dark Mode** - Light mode default with manual light/dark/system toggle in profile
 - **PWA Support** - Install on your phone's home screen
 
 ## Tech Stack
@@ -110,6 +111,8 @@ src/
 │   ├── BadgeDisplay.tsx      # Achievement showcase
 │   ├── StreakFlame.tsx       # Animated streak indicator
 │   ├── Confetti.tsx          # Celebration animation
+│   ├── ThemeProvider.tsx     # Dark mode context provider
+│   ├── ThemeToggle.tsx       # Light/dark/system toggle
 │   └── ...
 └── lib/
     ├── supabase/             # Supabase client utilities
