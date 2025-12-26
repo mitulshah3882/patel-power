@@ -31,7 +31,7 @@ export default function AuthHelpPage() {
           Link expired or invalid
         </h1>
         <p className="text-gray-600 mb-6">
-          No worries! Go back to the login page and enter the 6-digit code from your email instead.
+          No worries! Go back to the login page and enter the code from your email instead.
         </p>
 
         <Link

@@ -33,7 +33,7 @@ export default function LoginPage() {
       setStep('otp')
       setMessage({
         type: 'success',
-        text: 'Check your email for a 6-digit code!',
+        text: 'Check your email for a login code!',
       })
     }
 
@@ -199,7 +199,7 @@ export default function LoginPage() {
                   Enter your code
                 </h2>
                 <p className="text-gray-500 text-center mb-6 text-sm">
-                  We sent a 6-digit code to<br />
+                  We sent a code to<br />
                   <span className="font-medium text-gray-700">{email}</span>
                 </p>
 
@@ -209,10 +209,10 @@ export default function LoginPage() {
                       type="text"
                       inputMode="numeric"
                       pattern="[0-9]*"
-                      maxLength={6}
+                      maxLength={8}
                       value={otp}
                       onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-                      placeholder="123456"
+                      placeholder="12345678"
                       required
                       autoFocus
                       className="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all text-2xl text-center tracking-widest font-mono"
@@ -221,7 +221,7 @@ export default function LoginPage() {
 
                   <button
                     type="submit"
-                    disabled={loading || otp.length !== 6}
+                    disabled={loading || otp.length < 6}
                     className="w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-lg"
                   >
                     {loading ? (
