@@ -4,7 +4,7 @@ A mobile-first PWA for the Patel family to track workouts together in 2026. Buil
 
 ## Features
 
-- **Magic Link Auth** - Passwordless login via email (no passwords to remember)
+- **Email OTP Auth** - Passwordless login via 6-digit code (no passwords to remember, works in PWA)
 - **One-Tap Workout Logging** - Big, satisfying button to log daily workouts
 - **Family Leaderboard** - Real-time rankings by week, month, or all-time
 - **Streak Tracking** - Animated flame grows with consecutive workout days
@@ -87,8 +87,9 @@ See `supabase-schema.sql` for the complete schema.
 ### Supabase Setup
 
 1. Enable Email auth provider in Authentication > Providers
-2. (Optional) Customize magic link email template
-3. Ensure RLS policies are in place
+2. (Recommended) Customize email template to emphasize 6-digit code (Authentication > Email Templates)
+3. (Recommended) Extend session expiry to 90 days (Authentication > Settings)
+4. Ensure RLS policies are in place
 
 ## Project Structure
 
@@ -96,7 +97,7 @@ See `supabase-schema.sql` for the complete schema.
 src/
 ├── app/
 │   ├── page.tsx              # Home dashboard
-│   ├── login/page.tsx        # Magic link login
+│   ├── login/page.tsx        # Email OTP login
 │   ├── onboarding/page.tsx   # First-time user tutorial
 │   ├── leaderboard/page.tsx  # Family rankings
 │   ├── profile/page.tsx      # User profile & badges

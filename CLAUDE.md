@@ -9,7 +9,7 @@
 - **Framework:** Next.js 14+ (App Router) with TypeScript
 - **Styling:** Tailwind CSS
 - **Animations:** Framer Motion
-- **Backend/Auth/DB:** Supabase (magic link auth, PostgreSQL, real-time subscriptions)
+- **Backend/Auth/DB:** Supabase (email OTP auth, PostgreSQL, real-time subscriptions)
 - **Deployment:** Vercel
 - **PWA:** next-pwa
 
@@ -29,7 +29,7 @@ npm run lint       # Run ESLint
   /page.tsx                 # Home/Dashboard
   /leaderboard/page.tsx     # Leaderboard
   /profile/page.tsx         # User profile
-  /login/page.tsx           # Auth page
+  /login/page.tsx           # Email OTP auth page
   /onboarding/page.tsx      # First-time user tutorial
   /layout.tsx               # Root layout with nav
   /globals.css              # Global styles
@@ -78,8 +78,9 @@ Real-time subscriptions enabled on `workouts` and `profiles` tables.
 ## Key Design Decisions
 
 ### Authentication
-- **Magic links only** (no passwords) - critical for older family members
-- Persist sessions to minimize re-authentication
+- **Email OTP codes** (no passwords) - user enters 6-digit code from email
+- OTP flow works in PWA (magic links fail due to iOS storage isolation)
+- Persist sessions (90-day refresh token recommended) to minimize re-authentication
 
 ### Workouts
 - One workout per day maximum (prevents gaming)
