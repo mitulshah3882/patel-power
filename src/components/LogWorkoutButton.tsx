@@ -24,9 +24,24 @@ export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButton
   const minDateStr = minDate.toISOString().split('T')[0]
   const maxDateStr = new Date().toISOString().split('T')[0]
 
+  // Validate date is within allowed range (iOS Safari ignores min/max attributes)
+  const isDateValid = (dateStr: string) => {
+    const date = new Date(dateStr)
+    const min = new Date(minDateStr)
+    const max = new Date(maxDateStr)
+    return date >= min && date <= max
+  }
+
   const handleSubmit = async () => {
     setLoading(true)
     setError(null)
+
+    // Validate date range (iOS Safari allows selecting invalid dates)
+    if (!isDateValid(selectedDate)) {
+      setError('Please select a date within the last 7 days (no future dates)')
+      setLoading(false)
+      return
+    }
 
     const supabase = createClient()
 
@@ -113,7 +128,15 @@ export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButton
                   <input
                     type="date"
                     value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
+                    onChange={(e) => {
+                      const newDate = e.target.value
+                      setSelectedDate(newDate)
+                      if (!isDateValid(newDate)) {
+                        setError('Please select a date within the last 7 days')
+                      } else {
+                        setError(null)
+                      }
+                    }}
                     min={minDateStr}
                     max={maxDateStr}
                     className="w-full min-w-0 max-w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-base box-border appearance-none"
@@ -155,7 +178,7 @@ export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButton
                   <button
                     type="button"
                     onClick={handleSubmit}
-                    disabled={loading}
+                    disabled={loading || !isDateValid(selectedDate)}
                     className="flex-1 py-3 px-4 bg-primary-500 text-white rounded-xl font-medium hover:bg-primary-600 transition-colors disabled:opacity-50"
                   >
                     {loading ? 'Logging...' : 'Done! 🎉'}
