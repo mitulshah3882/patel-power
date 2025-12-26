@@ -97,7 +97,7 @@ export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButton
               onClick={() => setIsOpen(false)}
             >
               <div
-                className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto"
+                className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 max-h-[90vh] overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
               >
               <div className="text-center mb-6">
@@ -116,7 +116,7 @@ export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButton
                     onChange={(e) => setSelectedDate(e.target.value)}
                     min={minDateStr}
                     max={maxDateStr}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-lg"
+                    className="w-full min-w-0 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-base"
                   />
                 </div>
 
