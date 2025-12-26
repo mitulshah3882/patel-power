@@ -129,7 +129,7 @@ export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButton
                     type="text"
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
-                    placeholder="Morning yoga, walked 2 miles..."
+                    placeholder="Treadmill, walked 2 miles..."
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                   />
                 </div>
