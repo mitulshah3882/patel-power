@@ -5,6 +5,7 @@ A mobile-first PWA for the Patel family to track workouts together in 2026. Buil
 ## Features
 
 - **Email OTP Auth** - Passwordless login via 8-digit code (no passwords to remember, works in PWA)
+- **Animated Splash Screen** - Beautiful logo animation on app load
 - **One-Tap Workout Logging** - Big, satisfying button to log daily workouts
 - **Family Leaderboard** - Real-time rankings by week, month, or all-time
 - **Streak Tracking** - Animated flame grows with consecutive workout days

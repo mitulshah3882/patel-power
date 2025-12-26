@@ -45,6 +45,8 @@ npm run lint       # Run ESLint
   /Confetti.tsx             # Celebration animation
   /EmojiPicker.tsx          # Avatar selection
   /OnboardingSlides.tsx     # Tutorial carousel
+  /SplashScreen.tsx         # Animated splash screen on app load
+  /AppWrapper.tsx           # Client wrapper for splash screen state
 
 /lib
   /supabase.ts              # Supabase client setup

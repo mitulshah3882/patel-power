@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import AppWrapper from '@/components/AppWrapper'
 
 export const metadata: Metadata = {
   title: 'Patel Power',
@@ -34,7 +35,9 @@ export default function RootLayout({
       <head>
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
       </head>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <AppWrapper>{children}</AppWrapper>
+      </body>
     </html>
   )
 }
