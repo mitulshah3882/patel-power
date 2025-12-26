@@ -1,0 +1,25 @@
+{
+  "name": "Patel Power",
+  "short_name": "Patel Power",
+  "description": "Family workout tracking for 2026",
+  "theme_color": "#f97316",
+  "background_color": "#fff7ed",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ]
+}
