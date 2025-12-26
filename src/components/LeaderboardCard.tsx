@@ -10,6 +10,7 @@ interface LeaderboardCardProps {
   workoutCount: number
   streak: number
   isCurrentUser?: boolean
+  onClick?: () => void
 }
 
 export default function LeaderboardCard({
@@ -18,6 +19,7 @@ export default function LeaderboardCard({
   workoutCount,
   streak,
   isCurrentUser = false,
+  onClick,
 }: LeaderboardCardProps) {
   const getRankDisplay = () => {
     if (rank === 1) return '🥇'
@@ -30,7 +32,8 @@ export default function LeaderboardCard({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`flex items-center gap-4 p-4 rounded-2xl transition-all ${
+      onClick={onClick}
+      className={`flex items-center gap-4 p-4 rounded-2xl transition-all cursor-pointer active:scale-[0.98] ${
         isCurrentUser
           ? 'bg-primary-50 border-2 border-primary-300'
           : 'bg-white shadow-sm hover:shadow-md'

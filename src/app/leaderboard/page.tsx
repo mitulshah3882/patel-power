@@ -2,10 +2,11 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Profile, Workout } from '@/lib/types/database'
+import { Profile, Workout, UserBadge } from '@/lib/types/database'
 import { calculateStreak, getWorkoutsThisWeek, getWorkoutsThisMonth } from '@/lib/utils'
 import BottomNav from '@/components/BottomNav'
 import LeaderboardCard from '@/components/LeaderboardCard'
+import ProfileModal from '@/components/ProfileModal'
 import { motion } from 'framer-motion'
 import { PatelPowerIcon } from '@/components/Logo'
 
@@ -23,6 +24,11 @@ export default function LeaderboardPage() {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([])
   const [loading, setLoading] = useState(true)
 
+  // State for profile modal
+  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null)
+  const [allWorkouts, setAllWorkouts] = useState<Workout[]>([])
+  const [allBadges, setAllBadges] = useState<UserBadge[]>([])
+
   const fetchLeaderboard = useCallback(async () => {
     const supabase = createClient()
 
@@ -36,6 +42,13 @@ export default function LeaderboardPage() {
 
     // Fetch all workouts
     const { data: workouts } = await supabase.from('workouts').select('*').returns<Workout[]>()
+
+    // Fetch all badges for profile modal
+    const { data: badges } = await supabase.from('user_badges').select('*').returns<UserBadge[]>()
+
+    // Store for profile modal
+    if (workouts) setAllWorkouts(workouts)
+    if (badges) setAllBadges(badges)
 
     if (profiles && workouts) {
       const entriesMap = new Map<string, LeaderboardEntry>()
@@ -158,10 +171,20 @@ export default function LeaderboardPage() {
               workoutCount={entry.workoutCount}
               streak={entry.streak}
               isCurrentUser={entry.profile.id === currentUserId}
+              onClick={() => setSelectedProfile(entry.profile)}
             />
           ))
         )}
       </div>
+
+      {/* Profile Modal */}
+      <ProfileModal
+        isOpen={!!selectedProfile}
+        onClose={() => setSelectedProfile(null)}
+        profile={selectedProfile}
+        workouts={selectedProfile ? allWorkouts.filter((w) => w.user_id === selectedProfile.id) : []}
+        badges={selectedProfile ? allBadges.filter((b) => b.user_id === selectedProfile.id) : []}
+      />
 
       <BottomNav />
     </div>

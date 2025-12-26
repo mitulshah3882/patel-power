@@ -69,9 +69,23 @@ export const BADGES: BadgeDefinition[] = [
   {
     id: 'family_inspiration',
     name: 'Family Inspiration',
-    emoji: '🏆',
+    emoji: '🌟',
     description: 'Leading by example!',
     requirement: 'Longest streak in the family',
+  },
+  {
+    id: 'race_winner',
+    name: 'Race Winner',
+    emoji: '🏆',
+    description: 'First in the family to log 24 workouts!',
+    requirement: 'First to 24 workouts',
+  },
+  {
+    id: 'race_finisher',
+    name: 'Race Finisher',
+    emoji: '🎖️',
+    description: 'Completed the 24 workout challenge!',
+    requirement: 'Log 24 total workouts',
   },
 ]
 
@@ -82,7 +96,8 @@ export function getBadgeById(id: string): BadgeDefinition | undefined {
 export function checkNewBadges(
   workouts: Workout[],
   currentBadges: UserBadge[],
-  allFamilyWorkouts?: Map<string, Workout[]>
+  allFamilyWorkouts?: Map<string, Workout[]>,
+  allFamilyBadges?: UserBadge[]
 ): string[] {
   const earnedBadgeIds = new Set(currentBadges.map((b) => b.badge_type))
   const newBadges: string[] = []
@@ -169,6 +184,26 @@ export function checkNewBadges(
 
     if (isLongest && userLongestStreak > 0) {
       newBadges.push('family_inspiration')
+    }
+  }
+
+  // Race Winner / Race Finisher - 24 total workouts challenge
+  if (workouts.length >= 24) {
+    const hasWinner = !earnedBadgeIds.has('race_winner')
+    const hasFinisher = !earnedBadgeIds.has('race_finisher')
+
+    if (hasWinner || hasFinisher) {
+      // Check if anyone in the family already has the winner badge
+      const winnerAlreadyClaimed =
+        allFamilyBadges?.some((b) => b.badge_type === 'race_winner') ?? false
+
+      if (!winnerAlreadyClaimed && hasWinner) {
+        // This user is the first to 24!
+        newBadges.push('race_winner')
+      } else if (winnerAlreadyClaimed && hasFinisher) {
+        // Someone else won, but this user finished
+        newBadges.push('race_finisher')
+      }
     }
   }
 

@@ -37,7 +37,8 @@ npm run lint       # Run ESLint
 /components
   /ui                       # Reusable UI components (buttons, cards, etc.)
   /LogWorkoutButton.tsx     # Primary CTA
-  /LeaderboardCard.tsx      # User card in leaderboard
+  /LeaderboardCard.tsx      # User card in leaderboard (clickable)
+  /ProfileModal.tsx         # Slide-up modal for viewing family member profiles
   /ActivityFeed.tsx         # Recent activity
   /BadgeDisplay.tsx         # Badge showcase
   /StreakFlame.tsx          # Animated streak indicator
@@ -97,10 +98,15 @@ Real-time subscriptions enabled on `workouts` and `profiles` tables.
 |-------|-------------|-----|
 | First Step | Log first workout | `first_step` |
 | Week Warrior | 7-day streak | `week_warrior` |
-| Consistency King/Queen | 30-day streak | `consistency_royalty` |
+| Consistency Crown | 30-day streak | `consistency_crown` |
 | Century Club | 100 total workouts | `century_club` |
+| Early Bird | 10 workouts before 8am | `early_bird` |
+| Night Owl | 10 workouts after 8pm | `night_owl` |
+| New Year Energy | Workout on Jan 1, 2026 | `new_year_energy` |
 | Perfect Week | 7 workouts in one week | `perfect_week` |
-| New Year Energy | Workout on Jan 1, 2026 | `new_year` |
+| Family Inspiration | Longest streak in family | `family_inspiration` |
+| Race Winner | First to 24 workouts (competitive) | `race_winner` |
+| Race Finisher | Complete 24 workouts | `race_finisher` |
 
 ## Code Conventions
 

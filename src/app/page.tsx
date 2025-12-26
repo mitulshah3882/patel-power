@@ -109,19 +109,53 @@ export default function HomePage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
-    const { data: badges } = await supabase
+    // Fetch current user's badges
+    const { data: userBadges } = await supabase
       .from('user_badges')
       .select('*')
       .eq('user_id', user.id)
 
-    const newBadges = checkNewBadges(workouts, badges || [])
+    // Fetch ALL family badges for race winner check
+    const { data: allFamilyBadges } = await supabase
+      .from('user_badges')
+      .select('*')
+
+    // Fetch all family workouts for family inspiration badge
+    const { data: allWorkouts } = await supabase
+      .from('workouts')
+      .select('*')
+
+    // Build family workouts map
+    const familyWorkoutsMap = new Map<string, Workout[]>()
+    allWorkouts?.forEach((w) => {
+      const existing = familyWorkoutsMap.get(w.user_id) || []
+      existing.push(w)
+      familyWorkoutsMap.set(w.user_id, existing)
+    })
+
+    const newBadges = checkNewBadges(
+      workouts,
+      userBadges || [],
+      familyWorkoutsMap,
+      allFamilyBadges || []
+    )
+
     if (newBadges.length > 0) {
       // Award badges
       for (const badge of newBadges) {
-        await supabase.from('user_badges').insert({
+        const { error } = await supabase.from('user_badges').insert({
           user_id: user.id,
           badge_type: badge,
         })
+
+        // Handle race condition for winner badge
+        if (error && badge === 'race_winner' && error.code === '23505') {
+          // Someone else claimed winner first, award finisher instead
+          await supabase.from('user_badges').insert({
+            user_id: user.id,
+            badge_type: 'race_finisher',
+          })
+        }
       }
       setNewBadge(newBadges[0])
       setShowConfetti(true)
