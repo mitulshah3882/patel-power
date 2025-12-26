@@ -116,7 +116,8 @@ export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButton
                     onChange={(e) => setSelectedDate(e.target.value)}
                     min={minDateStr}
                     max={maxDateStr}
-                    className="w-full min-w-0 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-base"
+                    className="w-full min-w-0 max-w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-base box-border appearance-none"
+                    style={{ WebkitAppearance: 'none' }}
                   />
                 </div>
 
