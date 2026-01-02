@@ -20,6 +20,7 @@ interface LeaderboardEntry {
 
 export default function LeaderboardPage() {
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+  const [isCurrentUserAdmin, setIsCurrentUserAdmin] = useState(false)
   const [filter, setFilter] = useState<TimeFilter>('week')
   const [entries, setEntries] = useState<LeaderboardEntry[]>([])
   const [loading, setLoading] = useState(true)
@@ -39,6 +40,12 @@ export default function LeaderboardPage() {
 
     // Fetch all profiles
     const { data: profiles } = await supabase.from('profiles').select('*').returns<Profile[]>()
+
+    // Check if current user is admin
+    if (user && profiles) {
+      const currentProfile = profiles.find(p => p.id === user.id)
+      setIsCurrentUserAdmin(currentProfile?.is_admin ?? false)
+    }
 
     // Fetch all workouts
     const { data: workouts } = await supabase.from('workouts').select('*').returns<Workout[]>()
@@ -184,6 +191,8 @@ export default function LeaderboardPage() {
         profile={selectedProfile}
         workouts={selectedProfile ? allWorkouts.filter((w) => w.user_id === selectedProfile.id) : []}
         badges={selectedProfile ? allBadges.filter((b) => b.user_id === selectedProfile.id) : []}
+        isAdmin={isCurrentUserAdmin}
+        onWorkoutUpdated={fetchLeaderboard}
       />
 
       <BottomNav />
