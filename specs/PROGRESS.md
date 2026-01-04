@@ -21,15 +21,17 @@ The app is deployed and fully functional with all core features implemented.
 
 ### Leaderboard & Social
 - [x] Family leaderboard with real-time updates
-- [x] Week/Month/All-Time filter tabs
+- [x] Week/Year filter tabs
+- [x] Challenge tab with progress bars (race to 24 workouts)
 - [x] Workout counts and streak display
 - [x] Rank badges (gold, silver, bronze)
 - [x] Activity feed component
+- [x] Family profile modal (view any member's workouts/badges)
 
 ### Gamification
 - [x] Streak tracking with animated flame component
 - [x] Flame grows with streak length (3 sizes)
-- [x] 9 badges defined with unlock criteria
+- [x] 11 badges defined with unlock criteria (including race winner/finisher)
 - [x] Badge display on profile (earned + locked)
 - [x] Confetti celebration on workout log
 

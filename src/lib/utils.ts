@@ -90,6 +90,13 @@ export function getWorkoutsThisMonth(workouts: Pick<Workout, 'workout_date'>[]):
   return workouts.filter((w) => new Date(w.workout_date) >= startOfMonth).length
 }
 
+export function getWorkoutsThisYear(workouts: Pick<Workout, 'workout_date'>[]): number {
+  const currentYear = new Date().getFullYear()
+  const startOfYear = new Date(currentYear, 0, 1)
+
+  return workouts.filter((w) => new Date(w.workout_date) >= startOfYear).length
+}
+
 export function formatRelativeTime(date: Date | string): string {
   const now = new Date()
   const then = new Date(date)

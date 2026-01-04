@@ -38,6 +38,7 @@ npm run lint       # Run ESLint
   /ui                       # Reusable UI components (buttons, cards, etc.)
   /LogWorkoutButton.tsx     # Primary CTA
   /LeaderboardCard.tsx      # User card in leaderboard (clickable)
+  /ChallengeCard.tsx        # Progress bar card for challenge tab
   /ProfileModal.tsx         # Slide-up modal for viewing family member profiles
   /ActivityFeed.tsx         # Recent activity
   /BadgeDisplay.tsx         # Badge showcase

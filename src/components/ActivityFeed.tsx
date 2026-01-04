@@ -21,7 +21,7 @@ interface ActivityFeedProps {
 export default function ActivityFeed({ activities }: ActivityFeedProps) {
   if (activities.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
         <span className="text-4xl block mb-2">🏃</span>
         <p>No recent activity yet.</p>
         <p className="text-sm">Be the first to log a workout!</p>
@@ -36,7 +36,7 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
           <>
             <span className="font-medium">{activity.profile.display_name}</span> logged a workout{' '}
             {activity.workout?.note && (
-              <span className="text-gray-500">({activity.workout.note})</span>
+              <span className="text-gray-500 dark:text-gray-400">({activity.workout.note})</span>
             )}
           </>
         )
@@ -79,12 +79,12 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: index * 0.1 }}
-          className="flex items-start gap-3 p-3 bg-white rounded-xl shadow-sm"
+          className="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-xl shadow-sm"
         >
           <div className="text-2xl flex-shrink-0">{activity.profile.avatar_emoji}</div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm text-gray-800">{getActivityMessage(activity)}</p>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-sm text-gray-800 dark:text-gray-200">{getActivityMessage(activity)}</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
               {formatRelativeTime(activity.timestamp)} {getActivityEmoji(activity)}
             </p>
           </div>

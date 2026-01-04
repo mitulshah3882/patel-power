@@ -3,14 +3,15 @@
 import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Profile, Workout, UserBadge } from '@/lib/types/database'
-import { calculateStreak, getWorkoutsThisWeek, getWorkoutsThisMonth } from '@/lib/utils'
+import { calculateStreak, getWorkoutsThisWeek, getWorkoutsThisYear } from '@/lib/utils'
 import BottomNav from '@/components/BottomNav'
 import LeaderboardCard from '@/components/LeaderboardCard'
+import ChallengeCard from '@/components/ChallengeCard'
 import ProfileModal from '@/components/ProfileModal'
 import { motion } from 'framer-motion'
 import { PatelPowerIcon } from '@/components/Logo'
 
-type TimeFilter = 'week' | 'month' | 'all'
+type ViewMode = 'week' | 'year' | 'challenge'
 
 interface LeaderboardEntry {
   profile: Profile
@@ -18,11 +19,19 @@ interface LeaderboardEntry {
   streak: number
 }
 
+interface ChallengeEntry {
+  profile: Profile
+  workoutCount: number
+  isWinner: boolean
+  isFinisher: boolean
+}
+
 export default function LeaderboardPage() {
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [isCurrentUserAdmin, setIsCurrentUserAdmin] = useState(false)
-  const [filter, setFilter] = useState<TimeFilter>('week')
+  const [viewMode, setViewMode] = useState<ViewMode>('week')
   const [entries, setEntries] = useState<LeaderboardEntry[]>([])
+  const [challengeEntries, setChallengeEntries] = useState<ChallengeEntry[]>([])
   const [loading, setLoading] = useState(true)
 
   // State for profile modal
@@ -64,14 +73,14 @@ export default function LeaderboardPage() {
         const userWorkouts = workouts.filter((w: Workout) => w.user_id === profile.id)
         let count = 0
 
-        switch (filter) {
+        switch (viewMode) {
           case 'week':
             count = getWorkoutsThisWeek(userWorkouts)
             break
-          case 'month':
-            count = getWorkoutsThisMonth(userWorkouts)
+          case 'year':
+            count = getWorkoutsThisYear(userWorkouts)
             break
-          case 'all':
+          case 'challenge':
             count = userWorkouts.length
             break
         }
@@ -88,10 +97,34 @@ export default function LeaderboardPage() {
       )
 
       setEntries(sortedEntries)
+
+      // Compute challenge entries
+      if (badges) {
+        const challengeData: ChallengeEntry[] = profiles.map((profile: Profile) => {
+          const userWorkouts = workouts.filter((w: Workout) => w.user_id === profile.id)
+          const userBadges = badges.filter((b: UserBadge) => b.user_id === profile.id)
+
+          return {
+            profile,
+            workoutCount: userWorkouts.length,
+            isWinner: userBadges.some((b) => b.badge_type === 'race_winner'),
+            isFinisher: userBadges.some((b) => b.badge_type === 'race_finisher'),
+          }
+        })
+
+        // Sort: winner first, then by workout count descending
+        challengeData.sort((a, b) => {
+          if (a.isWinner && !b.isWinner) return -1
+          if (!a.isWinner && b.isWinner) return 1
+          return b.workoutCount - a.workoutCount
+        })
+
+        setChallengeEntries(challengeData)
+      }
     }
 
     setLoading(false)
-  }, [filter])
+  }, [viewMode])
 
   useEffect(() => {
     fetchLeaderboard()
@@ -114,14 +147,14 @@ export default function LeaderboardPage() {
     }
   }, [fetchLeaderboard])
 
-  const filterOptions: { value: TimeFilter; label: string }[] = [
+  const viewOptions: { value: ViewMode; label: string }[] = [
     { value: 'week', label: 'This Week' },
-    { value: 'month', label: 'This Month' },
-    { value: 'all', label: 'All Time' },
+    { value: 'year', label: 'This Year' },
+    { value: 'challenge', label: 'Challenge' },
   ]
 
   return (
-    <div className="min-h-screen pb-20 bg-gradient-to-b from-primary-50 to-white">
+    <div className="min-h-screen pb-20 bg-gradient-to-b from-primary-50 to-white dark:from-gray-900 dark:to-gray-900">
       {/* Header */}
       <div className="bg-gradient-to-br from-primary-500 to-primary-600 text-white px-4 pt-12 pb-6">
         <motion.div
@@ -135,17 +168,17 @@ export default function LeaderboardPage() {
         </motion.div>
       </div>
 
-      {/* Filter tabs */}
+      {/* View mode tabs */}
       <div className="px-4 py-4">
-        <div className="flex bg-white rounded-xl p-1 shadow-sm">
-          {filterOptions.map((option) => (
+        <div className="flex bg-white dark:bg-gray-800 rounded-xl p-1 shadow-sm">
+          {viewOptions.map((option) => (
             <button
               key={option.value}
-              onClick={() => setFilter(option.value)}
+              onClick={() => setViewMode(option.value)}
               className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
-                filter === option.value
+                viewMode === option.value
                   ? 'bg-primary-500 text-white shadow'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
               }`}
             >
               {option.label}
@@ -154,33 +187,68 @@ export default function LeaderboardPage() {
         </div>
       </div>
 
-      {/* Leaderboard */}
+      {/* Leaderboard / Challenge View */}
       <div className="px-4 space-y-3">
         {loading ? (
           <div className="text-center py-12">
             <div className="mb-4 animate-bounce flex justify-center">
               <PatelPowerIcon size={64} />
             </div>
-            <p className="text-gray-500">Loading leaderboard...</p>
+            <p className="text-gray-500 dark:text-gray-400">Loading...</p>
           </div>
-        ) : entries.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-5xl mb-4">🏃</div>
-            <p className="text-gray-500">No workouts logged yet!</p>
-            <p className="text-gray-400 text-sm">Be the first to get on the board.</p>
-          </div>
+        ) : viewMode === 'challenge' ? (
+          // Challenge View
+          challengeEntries.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="text-5xl mb-4">🏃</div>
+              <p className="text-gray-500 dark:text-gray-400">No participants yet!</p>
+            </div>
+          ) : (
+            <>
+              {/* Challenge Header */}
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl p-4 mb-4">
+                <h3 className="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                  🏁 Race to 24 Workouts
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                  First to complete 24 workouts wins the trophy!
+                </p>
+              </div>
+              {challengeEntries.map((entry, index) => (
+                <ChallengeCard
+                  key={entry.profile.id}
+                  profile={entry.profile}
+                  workoutCount={entry.workoutCount}
+                  rank={index + 1}
+                  isWinner={entry.isWinner}
+                  isFinisher={entry.isFinisher}
+                  isCurrentUser={entry.profile.id === currentUserId}
+                  onClick={() => setSelectedProfile(entry.profile)}
+                />
+              ))}
+            </>
+          )
         ) : (
-          entries.map((entry, index) => (
-            <LeaderboardCard
-              key={entry.profile.id}
-              profile={entry.profile}
-              rank={index + 1}
-              workoutCount={entry.workoutCount}
-              streak={entry.streak}
-              isCurrentUser={entry.profile.id === currentUserId}
-              onClick={() => setSelectedProfile(entry.profile)}
-            />
-          ))
+          // Standard Leaderboard View
+          entries.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="text-5xl mb-4">🏃</div>
+              <p className="text-gray-500 dark:text-gray-400">No workouts logged yet!</p>
+              <p className="text-gray-400 dark:text-gray-500 text-sm">Be the first to get on the board.</p>
+            </div>
+          ) : (
+            entries.map((entry, index) => (
+              <LeaderboardCard
+                key={entry.profile.id}
+                profile={entry.profile}
+                rank={index + 1}
+                workoutCount={entry.workoutCount}
+                streak={entry.streak}
+                isCurrentUser={entry.profile.id === currentUserId}
+                onClick={() => setSelectedProfile(entry.profile)}
+              />
+            ))
+          )
         )}
       </div>
 

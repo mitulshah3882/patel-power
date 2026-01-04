@@ -56,3 +56,5 @@ coverage/
 *.log
 *.cache
 .eslintcache
+
+backup-2025-data.json
