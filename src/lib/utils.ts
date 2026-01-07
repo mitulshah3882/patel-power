@@ -1,5 +1,25 @@
 import { Workout } from './types/database'
 
+/**
+ * Formats a Date as a local YYYY-MM-DD string (not UTC).
+ * Use this instead of toISOString().split('T')[0] to avoid timezone issues.
+ */
+export function toLocalDateString(date: Date): string {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+/**
+ * Parses a YYYY-MM-DD string as a local date (not UTC).
+ * Use this instead of new Date(dateStr) to avoid timezone issues.
+ */
+export function parseLocalDate(dateStr: string): Date {
+  const [year, month, day] = dateStr.split('-').map(Number)
+  return new Date(year, month - 1, day)
+}
+
 export function calculateStreak(workouts: Pick<Workout, 'workout_date'>[]): number {
   if (workouts.length === 0) return 0
 

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
+import { toLocalDateString, parseLocalDate } from '@/lib/utils'
 import Confetti from './Confetti'
 
 interface LogWorkoutButtonProps {
@@ -12,23 +13,23 @@ interface LogWorkoutButtonProps {
 
 export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
+  const [selectedDate, setSelectedDate] = useState(toLocalDateString(new Date()))
   const [note, setNote] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showConfetti, setShowConfetti] = useState(false)
 
-  // Calculate min date (7 days ago)
+  // Calculate min date (7 days ago) using local timezone
   const minDate = new Date()
   minDate.setDate(minDate.getDate() - 7)
-  const minDateStr = minDate.toISOString().split('T')[0]
-  const maxDateStr = new Date().toISOString().split('T')[0]
+  const minDateStr = toLocalDateString(minDate)
+  const maxDateStr = toLocalDateString(new Date())
 
   // Validate date is within allowed range (iOS Safari ignores min/max attributes)
   const isDateValid = (dateStr: string) => {
-    const date = new Date(dateStr)
-    const min = new Date(minDateStr)
-    const max = new Date(maxDateStr)
+    const date = parseLocalDate(dateStr)
+    const min = parseLocalDate(minDateStr)
+    const max = parseLocalDate(maxDateStr)
     return date >= min && date <= max
   }
 
@@ -66,7 +67,7 @@ export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButton
     setLoading(false)
     setIsOpen(false)
     setNote('')
-    setSelectedDate(new Date().toISOString().split('T')[0])
+    setSelectedDate(toLocalDateString(new Date()))
 
     // Check for new badges (simplified - full implementation would be in a server action)
     onSuccess?.()
