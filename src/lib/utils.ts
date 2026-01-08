@@ -25,7 +25,7 @@ export function calculateStreak(workouts: Pick<Workout, 'workout_date'>[]): numb
 
   // Sort by date descending
   const sorted = [...workouts].sort(
-    (a, b) => new Date(b.workout_date).getTime() - new Date(a.workout_date).getTime()
+    (a, b) => parseLocalDate(b.workout_date).getTime() - parseLocalDate(a.workout_date).getTime()
   )
 
   const today = new Date()
@@ -34,8 +34,7 @@ export function calculateStreak(workouts: Pick<Workout, 'workout_date'>[]): numb
   const yesterday = new Date(today)
   yesterday.setDate(yesterday.getDate() - 1)
 
-  const mostRecent = new Date(sorted[0].workout_date)
-  mostRecent.setHours(0, 0, 0, 0)
+  const mostRecent = parseLocalDate(sorted[0].workout_date)
 
   // Streak only counts if most recent workout is today or yesterday
   if (mostRecent < yesterday) return 0
@@ -47,8 +46,7 @@ export function calculateStreak(workouts: Pick<Workout, 'workout_date'>[]): numb
     const prevDate = new Date(currentDate)
     prevDate.setDate(prevDate.getDate() - 1)
 
-    const workoutDate = new Date(sorted[i].workout_date)
-    workoutDate.setHours(0, 0, 0, 0)
+    const workoutDate = parseLocalDate(sorted[i].workout_date)
 
     if (workoutDate.getTime() === prevDate.getTime()) {
       streak++
@@ -66,18 +64,15 @@ export function calculateLongestStreak(workouts: Pick<Workout, 'workout_date'>[]
 
   // Sort by date ascending
   const sorted = [...workouts].sort(
-    (a, b) => new Date(a.workout_date).getTime() - new Date(b.workout_date).getTime()
+    (a, b) => parseLocalDate(a.workout_date).getTime() - parseLocalDate(b.workout_date).getTime()
   )
 
   let longestStreak = 1
   let currentStreak = 1
 
   for (let i = 1; i < sorted.length; i++) {
-    const prevDate = new Date(sorted[i - 1].workout_date)
-    const currDate = new Date(sorted[i].workout_date)
-
-    prevDate.setHours(0, 0, 0, 0)
-    currDate.setHours(0, 0, 0, 0)
+    const prevDate = parseLocalDate(sorted[i - 1].workout_date)
+    const currDate = parseLocalDate(sorted[i].workout_date)
 
     const dayDiff = Math.round((currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24))
 
@@ -100,21 +95,21 @@ export function getWorkoutsThisWeek(workouts: Pick<Workout, 'workout_date'>[]): 
   startOfWeek.setDate(diff)
   startOfWeek.setHours(0, 0, 0, 0)
 
-  return workouts.filter((w) => new Date(w.workout_date) >= startOfWeek).length
+  return workouts.filter((w) => parseLocalDate(w.workout_date) >= startOfWeek).length
 }
 
 export function getWorkoutsThisMonth(workouts: Pick<Workout, 'workout_date'>[]): number {
   const now = new Date()
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
-  return workouts.filter((w) => new Date(w.workout_date) >= startOfMonth).length
+  return workouts.filter((w) => parseLocalDate(w.workout_date) >= startOfMonth).length
 }
 
 export function getWorkoutsThisYear(workouts: Pick<Workout, 'workout_date'>[]): number {
   const currentYear = new Date().getFullYear()
   const startOfYear = new Date(currentYear, 0, 1)
 
-  return workouts.filter((w) => new Date(w.workout_date) >= startOfYear).length
+  return workouts.filter((w) => parseLocalDate(w.workout_date) >= startOfYear).length
 }
 
 export function formatRelativeTime(date: Date | string): string {

@@ -1,5 +1,5 @@
 import { Workout, UserBadge } from './types/database'
-import { calculateStreak, calculateLongestStreak } from './utils'
+import { calculateStreak, calculateLongestStreak, parseLocalDate } from './utils'
 
 export interface BadgeDefinition {
   id: string
@@ -143,7 +143,7 @@ export function checkNewBadges(
 
   // New Year Energy - workout on Jan 1, 2026
   const newYearWorkout = workouts.find((w) => {
-    const date = new Date(w.workout_date)
+    const date = parseLocalDate(w.workout_date)
     return date.getFullYear() === 2026 && date.getMonth() === 0 && date.getDate() === 1
   })
   if (newYearWorkout && !earnedBadgeIds.has('new_year_energy')) {
@@ -154,7 +154,7 @@ export function checkNewBadges(
   if (!earnedBadgeIds.has('perfect_week')) {
     const workoutsByWeek = new Map<string, number>()
     workouts.forEach((w) => {
-      const date = new Date(w.workout_date)
+      const date = parseLocalDate(w.workout_date)
       const startOfWeek = new Date(date)
       const day = startOfWeek.getDay()
       const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1)

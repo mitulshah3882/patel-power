@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Profile, Workout, UserBadge } from '@/lib/types/database'
-import { calculateStreak, calculateLongestStreak, formatRelativeTime } from '@/lib/utils'
+import { calculateStreak, calculateLongestStreak, formatRelativeTime, parseLocalDate } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import BadgeDisplay from './BadgeDisplay'
 import StreakFlame from './StreakFlame'
@@ -124,7 +124,7 @@ export default function ProfileModal({
 
   // Sort workouts newest first
   const sortedWorkouts = [...workouts].sort(
-    (a, b) => new Date(b.workout_date).getTime() - new Date(a.workout_date).getTime()
+    (a, b) => parseLocalDate(b.workout_date).getTime() - parseLocalDate(a.workout_date).getTime()
   )
 
   return (
@@ -223,7 +223,7 @@ export default function ProfileModal({
                         <div className="flex justify-between items-start">
                           <div className="flex-1 min-w-0">
                             <p className="font-medium text-gray-900 dark:text-white">
-                              {new Date(workout.workout_date).toLocaleDateString(
+                              {parseLocalDate(workout.workout_date).toLocaleDateString(
                                 'en-US',
                                 {
                                   weekday: 'short',
@@ -397,7 +397,7 @@ export default function ProfileModal({
                       <span className="font-medium">{profile?.display_name}&apos;s</span> history.
                     </p>
                     <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
-                      {new Date(deletingWorkout.workout_date).toLocaleDateString('en-US', {
+                      {parseLocalDate(deletingWorkout.workout_date).toLocaleDateString('en-US', {
                         weekday: 'long',
                         month: 'long',
                         day: 'numeric',
