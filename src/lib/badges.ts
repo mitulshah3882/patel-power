@@ -87,6 +87,13 @@ export const BADGES: BadgeDefinition[] = [
     description: 'Completed the 24 workout challenge!',
     requirement: 'Log 24 total workouts',
   },
+  {
+    id: 'team_player',
+    name: 'Team Player',
+    emoji: '🤝',
+    description: 'The family logged 100 workouts in March together!',
+    requirement: 'Family logs 100 workouts in March 2026',
+  },
 ]
 
 export function getBadgeById(id: string): BadgeDefinition | undefined {
@@ -204,6 +211,21 @@ export function checkNewBadges(
         // Someone else won, but this user finished
         newBadges.push('race_finisher')
       }
+    }
+  }
+
+  // Team Player - family collectively logs 100 workouts in March 2026
+  if (allFamilyWorkouts && !earnedBadgeIds.has('team_player')) {
+    let totalMarchWorkouts = 0
+    allFamilyWorkouts.forEach((familyWorkouts) => {
+      totalMarchWorkouts += familyWorkouts.filter((w) => {
+        const date = parseLocalDate(w.workout_date)
+        return date.getFullYear() === 2026 && date.getMonth() === 2
+      }).length
+    })
+
+    if (totalMarchWorkouts >= 100) {
+      newBadges.push('team_player')
     }
   }
 

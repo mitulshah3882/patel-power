@@ -6,9 +6,10 @@ import { Profile, Workout, UserBadge } from '@/lib/types/database'
 import { calculateStreak, getWorkoutsThisWeek, getWorkoutsThisYear } from '@/lib/utils'
 import BottomNav from '@/components/BottomNav'
 import LeaderboardCard from '@/components/LeaderboardCard'
+import FamilyChallengeCard from '@/components/FamilyChallengeCard'
 import ChallengeCard from '@/components/ChallengeCard'
 import ProfileModal from '@/components/ProfileModal'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { PatelPowerIcon } from '@/components/Logo'
 
 type ViewMode = 'week' | 'year' | 'challenge'
@@ -31,7 +32,11 @@ export default function LeaderboardPage() {
   const [isCurrentUserAdmin, setIsCurrentUserAdmin] = useState(false)
   const [viewMode, setViewMode] = useState<ViewMode>('week')
   const [entries, setEntries] = useState<LeaderboardEntry[]>([])
-  const [challengeEntries, setChallengeEntries] = useState<ChallengeEntry[]>([])
+  const [familyMarchCount, setFamilyMarchCount] = useState(0)
+  const [familyChallengeComplete, setFamilyChallengeComplete] = useState(false)
+  const [marchContributions, setMarchContributions] = useState<{ name: string; emoji: string; count: number }[]>([])
+  const [archivedEntries, setArchivedEntries] = useState<ChallengeEntry[]>([])
+  const [archivedOpen, setArchivedOpen] = useState(false)
   const [loading, setLoading] = useState(true)
 
   // State for profile modal
@@ -100,26 +105,38 @@ export default function LeaderboardPage() {
 
       // Compute challenge entries
       if (badges) {
-        const challengeData: ChallengeEntry[] = profiles.map((profile: Profile) => {
+        // Family 100 - total March workouts across all users
+        const totalMarch = workouts.filter((w: Workout) => w.workout_date.startsWith('2026-03')).length
+        setFamilyMarchCount(totalMarch)
+        setFamilyChallengeComplete(totalMarch >= 100)
+
+        // Per-person March contributions
+        const contributions = profiles.map((profile: Profile) => {
+          const count = workouts.filter((w: Workout) => w.user_id === profile.id && w.workout_date.startsWith('2026-03')).length
+          return { name: profile.display_name, emoji: profile.avatar_emoji, count }
+        }).sort((a, b) => b.count - a.count)
+        setMarchContributions(contributions)
+
+        // Archived: Race to 24 entries (capped at 24)
+        const archivedData: ChallengeEntry[] = profiles.map((profile: Profile) => {
           const userWorkouts = workouts.filter((w: Workout) => w.user_id === profile.id)
           const userBadges = badges.filter((b: UserBadge) => b.user_id === profile.id)
 
           return {
             profile,
-            workoutCount: userWorkouts.length,
+            workoutCount: Math.min(userWorkouts.length, 24),
             isWinner: userBadges.some((b) => b.badge_type === 'race_winner'),
             isFinisher: userBadges.some((b) => b.badge_type === 'race_finisher'),
           }
         })
 
-        // Sort: winner first, then by workout count descending
-        challengeData.sort((a, b) => {
+        archivedData.sort((a, b) => {
           if (a.isWinner && !b.isWinner) return -1
           if (!a.isWinner && b.isWinner) return 1
           return b.workoutCount - a.workoutCount
         })
 
-        setChallengeEntries(challengeData)
+        setArchivedEntries(archivedData)
       }
     }
 
@@ -198,36 +215,69 @@ export default function LeaderboardPage() {
           </div>
         ) : viewMode === 'challenge' ? (
           // Challenge View
-          challengeEntries.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-5xl mb-4">🏃</div>
-              <p className="text-gray-500 dark:text-gray-400">No participants yet!</p>
+          <>
+            {/* Family 100 Section */}
+            <FamilyChallengeCard
+              title="Family 100"
+              description="Can the family log 100 workouts in March together?"
+              emoji="🤝"
+              currentCount={familyMarchCount}
+              goal={100}
+              isComplete={familyChallengeComplete}
+              contributions={marchContributions}
+            />
+
+            {/* Completed Challenges (Archived) */}
+            <div className="mt-6">
+              <button
+                onClick={() => setArchivedOpen(!archivedOpen)}
+                className="w-full flex items-center justify-between bg-gray-100 dark:bg-gray-800 rounded-xl px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-300"
+              >
+                <span>Completed Challenges</span>
+                <motion.span
+                  animate={{ rotate: archivedOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  ▼
+                </motion.span>
+              </button>
+              <AnimatePresence>
+                {archivedOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pt-4 space-y-3">
+                      <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-4 mb-2">
+                        <h3 className="text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                          🏁 Race to 24 Workouts
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                          First to complete 24 workouts wins the trophy!
+                        </p>
+                      </div>
+                      {archivedEntries.map((entry, index) => (
+                        <ChallengeCard
+                          key={entry.profile.id}
+                          profile={entry.profile}
+                          workoutCount={entry.workoutCount}
+                          rank={index + 1}
+                          isWinner={entry.isWinner}
+                          isFinisher={entry.isFinisher}
+                          isCurrentUser={entry.profile.id === currentUserId}
+                          onClick={() => setSelectedProfile(entry.profile)}
+                          goal={24}
+                        />
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-          ) : (
-            <>
-              {/* Challenge Header */}
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl p-4 mb-4">
-                <h3 className="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">
-                  🏁 Race to 24 Workouts
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                  First to complete 24 workouts wins the trophy!
-                </p>
-              </div>
-              {challengeEntries.map((entry, index) => (
-                <ChallengeCard
-                  key={entry.profile.id}
-                  profile={entry.profile}
-                  workoutCount={entry.workoutCount}
-                  rank={index + 1}
-                  isWinner={entry.isWinner}
-                  isFinisher={entry.isFinisher}
-                  isCurrentUser={entry.profile.id === currentUserId}
-                  onClick={() => setSelectedProfile(entry.profile)}
-                />
-              ))}
-            </>
-          )
+          </>
         ) : (
           // Standard Leaderboard View
           entries.length === 0 ? (

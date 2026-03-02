@@ -38,7 +38,8 @@ npm run lint       # Run ESLint
   /ui                       # Reusable UI components (buttons, cards, etc.)
   /LogWorkoutButton.tsx     # Primary CTA
   /LeaderboardCard.tsx      # User card in leaderboard (clickable)
-  /ChallengeCard.tsx        # Progress bar card for challenge tab
+  /ChallengeCard.tsx        # Progress bar card for challenge tab (generic, accepts goal prop)
+  /FamilyChallengeCard.tsx  # Collaborative family challenge progress bar with per-person contributions
   /ProfileModal.tsx         # Slide-up modal for viewing family member profiles
   /ActivityFeed.tsx         # Recent activity
   /BadgeDisplay.tsx         # Badge showcase
@@ -110,8 +111,9 @@ Real-time subscriptions enabled on `workouts` and `profiles` tables.
 | New Year Energy | Workout on Jan 1, 2026 | `new_year_energy` |
 | Perfect Week | 7 workouts in one week | `perfect_week` |
 | Family Inspiration | Longest streak in family | `family_inspiration` |
-| Race Winner | First to 24 workouts (competitive) | `race_winner` |
-| Race Finisher | Complete 24 workouts | `race_finisher` |
+| Race Winner | First to 24 workouts (archived) | `race_winner` |
+| Race Finisher | Complete 24 workouts (archived) | `race_finisher` |
+| Team Player | Family logs 100 workouts in March 2026 | `team_player` |
 
 ## Code Conventions
 

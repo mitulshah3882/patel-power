@@ -157,6 +157,22 @@ export default function HomePage() {
           })
         }
       }
+
+      // Mass-award team_player to all family members
+      if (newBadges.includes('team_player')) {
+        const { data: allProfiles } = await supabase.from('profiles').select('id')
+        if (allProfiles) {
+          for (const p of allProfiles) {
+            if (p.id !== user.id) {
+              await supabase.from('user_badges').insert({
+                user_id: p.id,
+                badge_type: 'team_player',
+              }).then(() => {}) // ignore errors (unique constraint for members who already have it)
+            }
+          }
+        }
+      }
+
       setNewBadge(newBadges[0])
       setShowConfetti(true)
     }

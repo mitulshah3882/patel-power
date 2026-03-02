@@ -7,9 +7,10 @@ A mobile-first PWA for the Patel family to track workouts together in 2026. Buil
 - **Email OTP Auth** - Passwordless login via 8-digit code (no passwords to remember, works in PWA)
 - **Animated Splash Screen** - Beautiful logo animation on app load
 - **One-Tap Workout Logging** - Big, satisfying button to log daily workouts
-- **Family Leaderboard** - Real-time rankings by week, month, or all-time
+- **Family Leaderboard** - Real-time rankings by week, year, or challenge view
+- **Family Challenges** - Collaborative goals (Family 100) with per-person contributions and archived past challenges
 - **Streak Tracking** - Animated flame grows with consecutive workout days
-- **Badges & Achievements** - Unlock milestones like "Week Warrior" and "Century Club"
+- **Badges & Achievements** - Unlock milestones like "Week Warrior", "Century Club", and "Team Player"
 - **Activity Feed** - See when family members log workouts
 - **Confetti Celebrations** - Because logging a workout should feel rewarding!
 - **Dark Mode** - Light mode default with manual light/dark/system toggle in profile
@@ -107,6 +108,8 @@ src/
 ├── components/
 │   ├── LogWorkoutButton.tsx  # Primary CTA with modal
 │   ├── LeaderboardCard.tsx   # User ranking card
+│   ├── ChallengeCard.tsx     # Per-person challenge progress
+│   ├── FamilyChallengeCard.tsx # Collaborative challenge progress
 │   ├── ActivityFeed.tsx      # Recent family activity
 │   ├── BadgeDisplay.tsx      # Achievement showcase
 │   ├── StreakFlame.tsx       # Animated streak indicator

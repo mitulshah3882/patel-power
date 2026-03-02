@@ -11,9 +11,8 @@ interface ChallengeCardProps {
   isFinisher: boolean
   isCurrentUser?: boolean
   onClick?: () => void
+  goal: number
 }
-
-const CHALLENGE_GOAL = 24
 
 export default function ChallengeCard({
   profile,
@@ -23,10 +22,11 @@ export default function ChallengeCard({
   isFinisher,
   isCurrentUser = false,
   onClick,
+  goal,
 }: ChallengeCardProps) {
-  const progress = Math.min(workoutCount / CHALLENGE_GOAL, 1)
+  const progress = Math.min(workoutCount / goal, 1)
   const percentage = Math.round(progress * 100)
-  const isCompleted = workoutCount >= CHALLENGE_GOAL
+  const isCompleted = workoutCount >= goal
 
   const getStatusIcon = () => {
     if (isWinner) return <span className="text-2xl">🏆</span>
@@ -70,7 +70,7 @@ export default function ChallengeCard({
             {isWinner && <span className="text-xs ml-1 text-amber-600 dark:text-amber-400">Winner!</span>}
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            {workoutCount} / {CHALLENGE_GOAL} workouts
+            {workoutCount} / {goal} workouts
           </p>
         </div>
 
