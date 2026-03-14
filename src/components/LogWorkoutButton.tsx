@@ -19,18 +19,13 @@ export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButton
   const [error, setError] = useState<string | null>(null)
   const [showConfetti, setShowConfetti] = useState(false)
 
-  // Calculate min date (7 days ago) using local timezone
-  const minDate = new Date()
-  minDate.setDate(minDate.getDate() - 7)
-  const minDateStr = toLocalDateString(minDate)
   const maxDateStr = toLocalDateString(new Date())
 
-  // Validate date is within allowed range (iOS Safari ignores min/max attributes)
+  // Validate date is not in the future (iOS Safari ignores max attribute)
   const isDateValid = (dateStr: string) => {
     const date = parseLocalDate(dateStr)
-    const min = parseLocalDate(minDateStr)
     const max = parseLocalDate(maxDateStr)
-    return date >= min && date <= max
+    return date <= max
   }
 
   const handleSubmit = async () => {
@@ -39,7 +34,7 @@ export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButton
 
     // Validate date range (iOS Safari allows selecting invalid dates)
     if (!isDateValid(selectedDate)) {
-      setError('Please select a date within the last 7 days (no future dates)')
+      setError('Please select a date that is not in the future')
       setLoading(false)
       return
     }
@@ -133,12 +128,11 @@ export default function LogWorkoutButton({ userId, onSuccess }: LogWorkoutButton
                       const newDate = e.target.value
                       setSelectedDate(newDate)
                       if (!isDateValid(newDate)) {
-                        setError('Please select a date within the last 7 days')
+                        setError('Please select a date that is not in the future')
                       } else {
                         setError(null)
                       }
                     }}
-                    min={minDateStr}
                     max={maxDateStr}
                     className="w-full min-w-0 max-w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-base box-border appearance-none"
                     style={{ WebkitAppearance: 'none' }}
