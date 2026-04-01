@@ -105,14 +105,14 @@ export default function LeaderboardPage() {
 
       // Compute challenge entries
       if (badges) {
-        // Family 100 - total March workouts across all users
-        const totalMarch = workouts.filter((w: Workout) => w.workout_date.startsWith('2026-03')).length
-        setFamilyMarchCount(totalMarch)
-        setFamilyChallengeComplete(totalMarch >= 100)
+        // Family 100 - total workouts across all users
+        const totalFamily = workouts.length
+        setFamilyMarchCount(totalFamily)
+        setFamilyChallengeComplete(totalFamily >= 100)
 
-        // Per-person March contributions
+        // Per-person contributions
         const contributions = profiles.map((profile: Profile) => {
-          const count = workouts.filter((w: Workout) => w.user_id === profile.id && w.workout_date.startsWith('2026-03')).length
+          const count = workouts.filter((w: Workout) => w.user_id === profile.id).length
           return { name: profile.display_name, emoji: profile.avatar_emoji, count }
         }).sort((a, b) => b.count - a.count)
         setMarchContributions(contributions)
@@ -219,7 +219,7 @@ export default function LeaderboardPage() {
             {/* Family 100 Section */}
             <FamilyChallengeCard
               title="Family 100"
-              description="Can the family log 100 workouts in March together?"
+              description="Can the family log 100 workouts together?"
               emoji="🤝"
               currentCount={familyMarchCount}
               goal={100}
