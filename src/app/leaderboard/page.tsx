@@ -105,14 +105,14 @@ export default function LeaderboardPage() {
 
       // Compute challenge entries
       if (badges) {
-        // Family 100 - total March workouts across all users
-        const totalMarch = workouts.filter((w: Workout) => w.workout_date.startsWith('2026-03')).length
+        // Family 100 - total workouts from March 2026 onward
+        const totalMarch = workouts.filter((w: Workout) => w.workout_date >= '2026-03-01').length
         setFamilyMarchCount(totalMarch)
         setFamilyChallengeComplete(totalMarch >= 100)
 
         // Per-person March contributions
         const contributions = profiles.map((profile: Profile) => {
-          const count = workouts.filter((w: Workout) => w.user_id === profile.id && w.workout_date.startsWith('2026-03')).length
+          const count = workouts.filter((w: Workout) => w.user_id === profile.id && w.workout_date >= '2026-03-01').length
           return { name: profile.display_name, emoji: profile.avatar_emoji, count }
         }).sort((a, b) => b.count - a.count)
         setMarchContributions(contributions)
