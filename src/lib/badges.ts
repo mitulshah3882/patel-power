@@ -92,7 +92,7 @@ export const BADGES: BadgeDefinition[] = [
     name: 'Team Player',
     emoji: '🤝',
     description: 'The family logged 100 workouts together!',
-    requirement: 'Family logs 100 workouts',
+    requirement: 'Family logs 100 workouts starting March 2026',
   },
 ]
 
@@ -214,11 +214,11 @@ export function checkNewBadges(
     }
   }
 
-  // Team Player - family collectively logs 100 workouts
+  // Team Player - family collectively logs 100 workouts (starting March 2026)
   if (allFamilyWorkouts && !earnedBadgeIds.has('team_player')) {
     let totalFamilyWorkouts = 0
     allFamilyWorkouts.forEach((familyWorkouts) => {
-      totalFamilyWorkouts += familyWorkouts.length
+      totalFamilyWorkouts += familyWorkouts.filter((w) => w.workout_date >= '2026-03-01').length
     })
 
     if (totalFamilyWorkouts >= 100) {
